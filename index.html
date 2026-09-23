@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lavri_Gaaz Auto Editor v2</title>
+<style>
+body{margin:0;background:#060b16;color:#fff;font-family:Arial,sans-serif}
+*{box-sizing:border-box}.top{padding:22px 5%;background:linear-gradient(120deg,#0a1020,#111a35);border-bottom:1px solid #263354}
+.brand{font-size:30px;font-weight:800}.brand b{color:#ff2d55}
+.wrap{max-width:1200px;margin:25px auto;padding:0 18px}
+.grid{display:grid;grid-template-columns:2fr 1fr;gap:18px}
+.card{background:#0c1426;border:1px solid #223253;border-radius:18px;padding:22px;box-shadow:0 10px 35px #0005}
+h2{margin-top:0}.hero{min-height:230px;display:flex;flex-direction:column;justify-content:center;background:radial-gradient(circle at 80% 30%,#34152e,#0c1426 55%)}
+input{width:100%;padding:15px;border-radius:12px;border:1px solid #33476e;background:#070d19;color:#fff;font-size:15px;margin:8px 0 14px}
+button{border:0;border-radius:12px;padding:14px 20px;background:#ff214d;color:#fff;font-weight:700;cursor:pointer}
+button:disabled{opacity:.5}.status{display:flex;gap:10px;align-items:center}.dot{width:11px;height:11px;border-radius:50%;background:#23e68a}.dot.off{background:#777}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:15px}.step{padding:14px;background:#0a1120;border-radius:14px;text-align:center;border:1px solid #1d2b48}
+pre{background:#050a13;padding:14px;border-radius:12px;min-height:120px;white-space:pre-wrap;max-height:260px;overflow:auto;color:#b7c7e8}
+.files a{display:block;color:#8fc5ff;text-decoration:none;padding:8px 0;border-bottom:1px solid #17233b}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="top"><div class="brand">👑 Lavri_Gaaz <b>Auto Editor v2</b></div><div>من بث YouTube إلى Highlight وShorts تلقائيًا</div></div>
+<div class="wrap">
+<div class="grid">
+<section class="card hero">
+<h1>🎬 اصنع مونتاجك تلقائيًا</h1>
+<p>ضع رابط بثك، والبوت يقوم بالتحميل والتحليل واختيار اللقطات وإنشاء Highlight وShorts.</p>
+<input id="url" placeholder="ألصق رابط YouTube VOD هنا">
+<button id="go" onclick="start()">ابدأ المونتاج</button>
+</section>
+<section class="card">
+<h2>حالة النظام</h2>
+<div class="status"><span id="dot" class="dot"></span><span id="status">جاهز</span></div>
+<p>البث: <span id="current">—</span></p>
+<p>الحالة: <span id="state">متوقف</span></p>
+</section>
+</div>
+<div class="card" style="margin-top:18px">
+<h2>⚡ خطوات العمل</h2>
+<div class="steps"><div class="step">1️⃣ تحميل VOD</div><div class="step">2️⃣ تحليل الصوت</div><div class="step">3️⃣ اختيار اللقطات</div><div class="step">4️⃣ Highlight</div><div class="step">5️⃣ Shorts</div></div>
+</div>
+<div class="grid" style="margin-top:18px">
+<section class="card"><h2>📜 السجل</h2><pre id="logs">لا توجد عملية بعد.</pre></section>
+<section class="card"><h2>🎞️ الملفات الناتجة</h2><div class="files" id="files">لا توجد ملفات بعد.</div></section>
+</div>
+</div>
+<script>
+async function start(){
+ const url=document.getElementById('url').value.trim();
+ if(!url) return alert('ضع رابط YouTube أولاً');
+ const r=await fetch('/api/process',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url})});
+ const j=await r.json(); if(!j.ok) alert(j.error||'حدث خطأ');
+ poll();
+}
+async function poll(){
+ const s=await fetch('/api/status').then(r=>r.json());
+ document.getElementById('status').textContent=s.message||'جاهز';
+ document.getElementById('current').textContent=s.url||'—';
+ document.getElementById('state').textContent=s.running?'يعمل الآن':'متوقف';
+ document.getElementById('dot').className='dot'+(s.running?'':' off');
+ document.getElementById('go').disabled=!!s.running;
+ document.getElementById('logs').textContent=(s.logs||[]).join('\n')||'لا توجد سجلات.';
+ const f=await fetch('/api/files').then(r=>r.json());
+ document.getElementById('files').innerHTML=f.length?f.map(x=>`<a href="/download/${encodeURIComponent(x.path)}">${x.name}</a>`).join(''):'لا توجد ملفات بعد.';
+ setTimeout(poll,2500);
+}
+poll();
+</script>
+</body></html>
