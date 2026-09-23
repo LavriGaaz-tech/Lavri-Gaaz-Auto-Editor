@@ -1,0 +1,40 @@
+{
+  "channel_url": "https://www.youtube.com/@YOUR_CHANNEL/live",
+  "output_dir": "output",
+  "download_archive": "downloaded.txt",
+  "poll_seconds": 120,
+
+  "game": "Rust",
+  "language": "ar",
+  "brand_text": "Lavri_Gaaz",
+
+  "clip_before": 14,
+  "clip_after": 20,
+  "minimum_clip_score": 4,
+  "min_gap_seconds": 35,
+
+  "highlight_minutes": 10,
+  "max_highlight_clips": 20,
+
+  "create_shorts": true,
+  "short_count": 5,
+  "short_duration": 55,
+
+  "whisper_model": "base",
+  "audio_sample_rate": 16000,
+
+  "use_loudness": true,
+  "use_reaction_words": true,
+
+  "reaction_words": [
+    "قتلت", "قتلته", "قتل", "فزنا", "فوز", "كلتش", "هيدشوت",
+    "مستحيل", "لااا", "واو", "يا ساتر", "يا لطيف", "هههه",
+    "oh", "no", "wow", "nice", "clutch", "kill", "killed",
+    "headshot", "winner", "win", "dead"
+  ],
+
+  "game_words": [
+    "enemy", "عدو", "لاعب", "raid", "روست", "rust", "loot",
+    "fight", "قتال", "سلاح", "shot", "headshot"
+  ]
+}

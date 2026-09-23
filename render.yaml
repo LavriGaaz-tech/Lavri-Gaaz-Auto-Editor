@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: lavri-gaaz-auto-editor
+    runtime: docker
+    plan: free
+    envVars:
+      - key: OUTPUT_DIR
+        value: /data/output
+      - key: WHISPER_MODEL
+        value: base

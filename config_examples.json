@@ -1,0 +1,10 @@
+{
+  "Rust": {
+    "reaction_words": ["قتلت", "قتلته", "كلتش", "هيدشوت", "raid", "loot", "enemy", "مستحيل", "لااا", "wow", "clutch"],
+    "game_words": ["rust", "روست", "raid", "بيد", "سلاح", "base", "enemy"]
+  },
+  "Fortnite": {
+    "reaction_words": ["قتلت", "هيدشوت", "كلتش", "win", "victory", "مستحيل", "لااا", "wow", "clutch"],
+    "game_words": ["fortnite", "سلاح", "zone", "enemy", "knock"]
+  }
+}
